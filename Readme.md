@@ -9,11 +9,24 @@ En las llaves es posible insertar código de javascript, por ejemplo:
     </ol>
 ```
 De igual forma podemos apreciar los li tienen cómo propiedad un key, esto lo debe llevar y debe ser único.
-## UseState
+## UseState 
 El useState se refiere básicamente al estado (la información que tiene nuestros componentes), es importante destacar que este estado se cambia NO se muta. De igual forma lo useState no pueden ir dentro de condicionales ya que react pierde la lógica los mismos.
 ```Javascript 
  const [categories, setCategories] = useState(['Valorant','Team Heretics'])
 ```
+### UseState crear nuevo estado 
+```Javascript 
+ const onAddCategory =  () =>{
+    setCategories(['League of legends'],...categories)
+  }
+ ```
+
+### UseState crear nuevo estado (callbacks)
+```Javascript 
+ const onAddCategory =  () =>{
+    setCategories(cat => ['League of Legend'],...cat)
+  }
+ ```
 ## Eventos
 Sintaxis corta de un evento 
 ### Llamada a la función
