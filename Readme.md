@@ -207,6 +207,7 @@ El problema de lo anterior es que al invocar la función directamente en el comp
 2) Es importante que useEffect evita que cuando cambiemos estado del componente, una función se vuelva a ejecutar,
 pero si el componente es creado desde 0 entonces sí se ejecuta otra vez
 
+3) Los useEffect no puede retorar promesas por lo que no pueden ser asincrónos
 Ejemplo 
 
 En este caso tenemos un componente que se genera con un map, tenemos que ver que cada vez que se CONSTRUYA el componente se va a invocar esa función.
@@ -216,6 +217,7 @@ En este caso tenemos un componente que se genera con un map, tenemos que ver que
   },[])
     
 ```
+
 
 
 
