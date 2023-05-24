@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { getGifs } from '../helpers/getGifs';
+
 
 export const GifGrid = ({category}) => {
-    const getGifs = async () =>{
-        const url = "https://api.giphy.com/v1/gifs/search?api_key=qGBaLhCZfXXrcw6IK63NpV7AySfCUcp6&q="+category 
-        const response = await fetch(url);
-        console.log(response)
-       }
-    getGifs();
+   
+  useEffect(()=>{
+    getGifs(category);
+  },[])
+    
   return (
     <>
     <h3>{category}</h3>

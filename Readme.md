@@ -132,7 +132,90 @@ Se refiere a pasar un evento del padre cómo parametro al hijo, el hijo procesa 
   )
 
 ```
+## Peticiones Api
 
+Al hacer una petición es buena idea que esta se encuentre fuera del componente, para que esta no se esté redibujando.
+
+### Dentro del componente
+``` Javascript
+ import React from 'react'
+
+export const GifGrid = ({category}) => {
+  
+  /*
+  Para que la función getGifs no se esté redibujando cada vez que cambia el estado*/
+    const getGifs = async () =>{
+        const url = "https://api.giphy.com/v1/gifs/search?api_key=kAKfkpUgNtXYygNmZYpOuxBMqLKE3fwj&q="+category 
+        const response = await fetch(url);
+        const {data} = await response.json();
+        
+        const gifs = data.map(img => ({
+          id:img.id,
+          title: img.title,
+          url : img.images.downsized_medium.url
+        }))
+
+        console.log(gifs);
+
+       }
+    getGifs();
+  return (
+    <>
+    <h3>{category}</h3>
+    <p>Hola mundo</p>
+    </>
+  )
+}
+```
+### Fuera del componente
+``` Javascript
+import React from 'react'
+const getGifs = async (category) =>{
+  const url = "https://api.giphy.com/v1/gifs/search?api_key=kAKfkpUgNtXYygNmZYpOuxBMqLKE3fwj&q="+category 
+  const response = await fetch(url);
+  const {data} = await response.json();
+  
+  const gifs = data.map(img => ({
+    id:img.id,
+    title: img.title,
+    url : img.images.downsized_medium.url
+  }))
+
+  console.log(gifs);
+
+ }
+
+export const GifGrid = ({category}) => {
+   
+    getGifs(category);
+  return (
+    <>
+    <h3>{category}</h3>
+    <p>Hola mundo</p>
+    </>
+  )
+}
+```
+
+## UseEffect
+El problema de lo anterior es que al invocar la función directamente en el componente, se llama varias veces (cuando ocurre un cambio de estado )
+
+1) Lo utilizamos cuando queremos que se ejecute cómo acción secundaria de algún evento
+  a) Cuando se CONSTRUYA por primera vez el componente
+  b) Cuando se cambie el estado de algo
+
+2) Es importante que useEffect evita que cuando cambiemos estado del componente, una función se vuelva a ejecutar,
+pero si el componente es creado desde 0 entonces sí se ejecuta otra vez
+
+Ejemplo 
+
+En este caso tenemos un componente que se genera con un map, tenemos que ver que cada vez que se CONSTRUYA el componente se va a invocar esa función.
+``` Javascript
+  useEffect(()=>{
+    getGifs(category);
+  },[])
+    
+```
 
 
 
