@@ -217,7 +217,17 @@ En este caso tenemos un componente que se genera con un map, tenemos que ver que
   },[])
     
 ```
-
-
+## Custom Hooks
+1)Recordemos que los Hooks son funciones que regresa algo, en este caso un custom hook regresa lo que nosotros necesitemos
+2)Basicamente te ayuda a reducir la logica de tus componentes para que luego lo exportes.
+``` Javascript
+ export const useFetchGifs = () => {
+  return {
+    images:[],
+    isLoading:false
+  }
+}
+   
+```
 
 
