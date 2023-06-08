@@ -47,3 +47,134 @@ Función:
         setcounter(counter+value);
     }
 ```
+
+## useEffect  -- consejo obtener datos de input 
+
+1)Recordemos quel el useEffect en su forma simple nos ayuda a que no se recarge constanteme un método cuando se redibuje el componente
+
+``` Javascript
+   useEffect(() => {
+      console.log("hola")
+    }, [])
+```
+2)Del target podemos obtener el name que nos sirve como identificador.
+
+``` Javascript
+   const onInputChange = ({target}) =>{
+        const {name ,value} = target;
+        setformState({
+            ...formState,
+            [name]:value
+        })
+    }
+```
+3) Html de donde viene la información
+``` html
+ <input type="text"
+    className='form-control'
+    placeholder="username"
+    name='username'
+    value={username}
+    onChange={onInputChange}
+    />
+```
+4) Podemos pasar "vigilar" el valor de una variable, si esta se modifica se dispara el useEffect, ejemplo: 
+``` javascript
+ useEffect(() => {
+      console.log("soy el username")
+    }, [username])
+
+
+        useEffect(() => {
+      console.log("soy el email")
+    }, [email])
+    
+```
+## Limpiar useEffect
+1) Es importante limpiar el useEffect, cuando tengamos un componente que aparece y desaparece, aunque este desaparezca los eventos del mismo se siguen mostrando, ejemplo:
+
+Lugar donde se invoca 
+``` jsx
+{(username==='strider2') &&  <Message/> }
+```
+Código de Message
+``` javascript
+import { useEffect } from "react"
+
+export const Message = () => {
+    useEffect(() => {
+        window.addEventListener('mousemove',(event)=>{
+            console.log("xdxdxd");
+        })
+      
+        /*
+        return () => {
+          console.log("message unmounted")
+        }
+        */
+      }, [])
+  return (
+   <>
+   
+    <h3>Usuario ya existe</h3>
+   
+   </>
+  )
+}
+```
+2) Podemos ver que es un condicional, aunque el componente se destruya el evento de addEventListener se **sigue ejecutando** y peor se hace un **stack** del evento ya que no se elimina, para limpiar el evento tenemos que utilizar el removeEventListener: 
+
+``` javascript
+import { useEffect } from "react"
+
+export const Message = () => {
+    useEffect(() => {
+       const onMouseMove = ({x,y}) =>{
+        const coords = {x,y}
+        console.log(coords)
+       }
+      window.addEventListener('mousemove', onMouseMove)
+        
+        return () => {
+        window.removeEventListener('mousemove', onMouseMove)
+        }
+        
+      }, [])
+  return (
+   <>
+   
+    <h3>Usuario ya existe</h3>
+   
+   </>
+  )
+}
+```
+3) Al momento de manejar de igual forma useState de un componente el cual no puedes manejar un estado debido a que no existe en el dom, ejemplo:
+
+``` javascript
+import { useEffect, useState } from "react"
+
+export const Message = () => {
+    const [coords, setCoords] = useState({x:0,y:0});
+    useEffect(() => {
+       const onMouseMove = ({x,y}) =>{
+        setCoords({x,y})
+       }
+      window.addEventListener('mousemove', onMouseMove)
+       /* 
+        return () => {
+        window.removeEventListener('mousemove', onMouseMove)
+        }
+        */
+        
+      }, [])
+  return (
+   <>
+   
+    <h3>Usuario ya existe</h3>
+    {JSON.stringify(coords)}
+   
+   </>
+  )
+}
+```
