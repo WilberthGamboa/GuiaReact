@@ -178,3 +178,5 @@ export const Message = () => {
   )
 }
 ```
+4) La forma de solucionarlo es basicamente lo mismo
+
