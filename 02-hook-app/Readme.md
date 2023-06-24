@@ -180,3 +180,28 @@ export const Message = () => {
 ```
 4) La forma de solucionarlo es basicamente lo mismo. 
 
+# Custom Hooks Form (FORM WITH CUSTOM HOOK)
+Durante esta sección se ven hooks relacionados a los form, de igual forma se muestran implementaciones interestantes 
+1) Un ejemplo aquí es que podemos exponer los métodos y objetos
+## Use Form
+``` javascript
+import React, { useState } from 'react'
+
+export const useForm = (initialForm = {}) => {
+    const [formState, setformState] = useState(initialForm)
+
+   
+    const onInputChange = ({target}) =>{
+        const {name ,value} = target;
+        setformState({
+            ...formState,
+            [name]:value
+        })
+    }
+  return {
+    formState,
+    onInputChange,
+    ...formState
+  }
+}
+```
